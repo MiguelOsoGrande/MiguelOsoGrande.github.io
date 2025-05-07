@@ -29,6 +29,10 @@ html, body {
     line-height: 1.2;
     letter-spacing: 0.01rem;
 }
+.custom-web-name a {
+    color:#000000;
+    text-decoration: none;
+}
 
 #custom-tagline {
     margin: -8px 0 10px 2px;
