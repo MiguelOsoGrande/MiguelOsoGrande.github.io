@@ -1,3 +1,14 @@
+img:-webkit-full-screen,
+img:-moz-full-screen,
+img:-ms-fullscreen,
+img:fullscreen {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+}
+
 /* === Base Styles === */
 html {
   height: 100%;
@@ -190,6 +201,7 @@ body {
   width: 100%;
   height: auto; /* fill slide width, keep aspect */
   object-fit: contain;
+  display: block;
 }
 
 /* keep your existing .fullscreen-btn, .carousel-button styling */

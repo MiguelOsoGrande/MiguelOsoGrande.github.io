@@ -159,9 +159,14 @@
 
           resize() {
             this.width = this.container.clientWidth;
-            this.slides.forEach(
-              (slide) => (slide.style.width = `${this.width}px`)
-            );
+            this.slides.forEach((slide) => {
+              slide.style.width = `${this.width}px`;
+              const img = slide.querySelector("img");
+              img.style.width = "100%";
+              img.style.height = "auto";
+              img.style.maxWidth = "none";
+              img.style.maxHeight = "none";
+            });
             this.track.style.transition = "none";
             this.track.style.transform = `translateX(-${
               this.current * this.width
@@ -189,24 +194,100 @@
           });
         });
 
-        // 6. Arrow‑key navigation when an image is fullscreen
-        document.addEventListener("keydown", (e) => {
-          if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return;
-          const fs = document.fullscreenElement;
-          if (!fs || fs.tagName !== "IMG") return;
+        // 6. keyboard handling
+        document.querySelectorAll(".fullscreen-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const img = btn.closest(".carousel-slide").querySelector("img");
+            img.requestFullscreen?.();
+          });
+        });
 
-          const wrapper = fs.closest(".carousel-wrapper");
-          const carousel = carousels.get(wrapper);
-          if (!carousel) return;
+        // 6. keyboard handling (arrows + Escape) + resize on exit
+        // 6. keyboard handling (arrows + Escape) + resize on exit
+        const onKeyDown = (e) => {
+          // figure out if anything is fullscreen
+          const fsEl =
+            document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.msFullscreenElement;
+          if (!fsEl) return;
+
+          // ESC: exit fullscreen & reset sizes immediately
+          if (e.key === "Escape") {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen)
+              document.webkitExitFullscreen();
+            else if (document.msExitFullscreen) document.msExitFullscreen();
+            // force all carousels to recalc their widths
+            carousels.forEach((c) => c.resize());
+            return;
+          }
+
+          // Arrows: only when an IMG is fullscreen
+          if (
+            !["ArrowLeft", "ArrowRight"].includes(e.key) ||
+            fsEl.tagName !== "IMG"
+          )
+            return;
           e.preventDefault();
 
-          carousel.go(
-            e.key === "ArrowRight" ? carousel.current + 1 : carousel.current - 1
-          );
+          const wrapper = fsEl.closest(".carousel-wrapper");
+          const carousel = carousels.get(wrapper);
+          if (!carousel) return;
 
+          // move
+          const nextIdx =
+            e.key === "ArrowRight"
+              ? carousel.current + 1
+              : carousel.current - 1;
+
+          // Update the carousel's current index first
+          carousel.current =
+            nextIdx < 0
+              ? carousel.slides.length - 1
+              : nextIdx >= carousel.slides.length
+              ? 0
+              : nextIdx;
+
+          // Then update the display
+          carousel.track.style.transition = "transform 0.5s ease";
+          carousel.track.style.transform = `translateX(-${
+            carousel.current * carousel.width
+          }px)`;
+
+          // keep the new image fullscreen
           const newImg = carousel.slides[carousel.current].querySelector("img");
           newImg.requestFullscreen?.();
-        });
+        };
+
+        document.addEventListener("keydown", onKeyDown);
+
+        // 7. also listen for the fullscreenchange event (vendor-prefixed too)
+        const onFullScreenChange = () => {
+          const stillFS =
+            document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.msFullscreenElement;
+          if (!stillFS) {
+            setTimeout(() => {
+              carousels.forEach((c) => {
+                c.resize();
+                // Reset all images in this carousel
+                c.slides.forEach((slide) => {
+                  const img = slide.querySelector("img");
+                  img.style.width = "";
+                  img.style.height = "";
+                  img.style.maxWidth = "";
+                  img.style.maxHeight = "";
+                  img.style.objectFit = "";
+                });
+              });
+            }, 100);
+          }
+        };
+        document.addEventListener("fullscreenchange", onFullScreenChange);
+        document.addEventListener("webkitfullscreenchange", onFullScreenChange);
+        document.addEventListener("msfullscreenchange", onFullScreenChange);
       });
     </script>
   </body>
