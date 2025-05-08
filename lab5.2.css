@@ -205,6 +205,7 @@ body {
   align-items: center; /* center img vertically */
   justify-content: center; /* center img horizontally */
   position: relative; /* for fullscreen button */
+  height: 500px;
 }
 
 .carousel-slide img {
