@@ -1,12 +1,18 @@
 /* === Base Styles === */
-html, body {
-    font-family: "Courier New", monospace;
-    background-color: #ffffff;
-    color: #000000;
-    text-align: center;
+html {
     height: 100%;
     margin: 0;
     padding: 0;
+}
+
+body {
+    font-family: "Courier", monospace;
+    background-color: #ffffff;
+    color: #000000;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -14,6 +20,8 @@ html, body {
 /* === Header === */
 #custom-header {
     width: 100%;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
 }
 
 .custom-header-container {
@@ -22,21 +30,22 @@ html, body {
 
 .custom-web-name {
     margin: 10px 0 0;
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-family: "Helvetica", sans-serif;
     font-size: 2.5rem;
     font-style: italic;
     font-weight: bold;
     line-height: 1.2;
     letter-spacing: 0.01rem;
 }
+
 .custom-web-name a {
-    color:#000000;
+    color: #000;
     text-decoration: none;
 }
 
 #custom-tagline {
     margin: -8px 0 10px 2px;
-    font-family: "Courier New", monospace;
+    font-family: "Courier", monospace;
     font-size: 1rem;
     font-style: italic;
     font-weight: bold;
@@ -52,23 +61,29 @@ html, body {
 #custom-navigation-list {
     display: flex;
     justify-content: center;
-    list-style-type: none;
-    padding: 0;
+    list-style: none;
     margin: 0;
+    padding: 0;
+    gap: 20px;
 }
 
 #custom-navigation-list li a {
     padding: 1vw;
-    font-size: 1em;
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 1rem;
+    font-family: "Helvetica", sans-serif;
     font-weight: bold;
-    border-radius: 20px;
-    margin: 1vw;
     text-decoration: none;
-    color: #000000;
+    color: #000;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+    text-align: center; /* Added to center text in links */
 }
 
-/* === Flex Container === */
+#custom-navigation-list li a:hover {
+    background-color: #eee;
+}
+
+/* === Layout & Flex Container === */
 .flex-container {
     display: flex;
     justify-content: center;
@@ -79,34 +94,29 @@ html, body {
     padding: 0 20px;
 }
 
-/* === Reversed Flex for Image on Left === */
 .flex-row-reverse {
     flex-direction: row-reverse;
 }
 
-/* === Image Section === */
 .flex-item1 img {
     width: 100%;
     max-width: 300px;
     height: auto;
-    border-radius: 0;
-    align-self: center;
 }
 
-/* === Text Section === */
 .flex-item2a {
     width: 100%;
     max-width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    font-family: "Courier New", monospace;
+    font-family: "Courier", monospace;
     padding: 20px;
+    text-align: center;
 }
 
 .flex-item2a h2 {
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-family: "Helvetica", sans-serif;
     font-style: italic;
     font-weight: bold;
     font-size: 2rem;
@@ -116,7 +126,7 @@ html, body {
 
 .flex-item2a p {
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 /* === Work Page Grid Styles === */
@@ -130,10 +140,9 @@ html, body {
 .work-item {
     background-color: #f0f0f0;
     padding: 10px;
-    text-align: center;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .work-item:hover {
@@ -146,28 +155,105 @@ html, body {
 }
 
 .work-item p {
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-family: "Helvetica", sans-serif;
     font-size: 1.2rem;
     font-weight: bold;
     margin-top: 10px;
 }
 
+/* === Carousel (Work Page Only) === */
+.carousel-wrapper {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+.carousel {
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-track-container {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-slide {
+    min-width: 100%;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: auto;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 2rem;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.carousel-button.prev {
+    left: 10px;
+}
+
+.carousel-button.next {
+    right: 10px;
+}
+
+/* === Contact Page Form === */
+#contact-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 40px 20px;
+}
+
+#contact-form input,
+#contact-form textarea {
+    width: 300px;
+    padding: 10px;
+    font-size: 1rem;
+    font-family: "Courier", monospace;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#contact-form button {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-family: "Helvetica", sans-serif;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#contact-form button:hover {
+    background-color: #333;
+}
+
 /* === Footer === */
 footer {
     width: 100%;
-    margin-top: auto;
-    text-align: center;
-    background-color: white;
     padding: 20px;
-}
-
-footer p {
-    font-family: "Courier New", monospace;
+    background-color: #fff;
+    font-family: "Courier", monospace;
     font-size: 0.9rem;
+    margin-top: auto;
 }
 
-/* === Responsive Styles === */
-@media screen and (max-width: 768px) {
+/* === Responsive === */
+@media (max-width: 768px) {
     .flex-container {
         flex-direction: column;
         gap: 20px;
@@ -192,7 +278,7 @@ footer p {
     }
 }
 
-@media screen and (max-width: 480px) {
+@media (max-width: 480px) {
     .custom-web-name {
         font-size: 2rem;
     }
@@ -200,4 +286,9 @@ footer p {
     .work-item p {
         font-size: 1rem;
     }
+}
+
+/* === Smooth Scroll === */
+html {
+    scroll-behavior: smooth;
 }
