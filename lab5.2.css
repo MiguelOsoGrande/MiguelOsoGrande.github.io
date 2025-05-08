@@ -164,40 +164,70 @@ body {
   position: relative;
   overflow: hidden;
 }
+
 .carousel-track-container {
-  /* just a viewport */
   overflow: hidden;
+  width: 100%;
 }
+
 .carousel-track {
   display: flex;
-  transition: transform 0.5s ease;
-  list-style: none;
   margin: 0;
   padding: 0;
+  list-style: none;
+  /* no CSS transition here; JS will set it */
 }
+
 .carousel-slide {
-  min-width: 100%;
+  flex: 0 0 100%; /* exactly one slide per “page” */
+  display: flex;
+  align-items: center; /* center img vertically */
+  justify-content: center; /* center img horizontally */
+  position: relative; /* for fullscreen button */
 }
+
 .carousel-slide img {
   width: 100%;
-  display: block;
+  height: auto; /* fill slide width, keep aspect */
+  object-fit: contain;
 }
+
+/* keep your existing .fullscreen-btn, .carousel-button styling */
+
+.fullscreen-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  border: none;
+  padding: 4px 6px;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 10;
+  line-height: 1;
+  transition: all 0.3s ease-in-out;
+}
+.fullscreen-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
 .carousel-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   border: none;
   color: #fff;
   font-size: 2rem;
   padding: 0.2em 0.5em;
   cursor: pointer;
   z-index: 10;
-  filter: opacity(0.4);
   transition: all ease-in-out 0.3s;
 }
 .carousel-button:hover {
-  filter: opacity(0.8);
+  background: rgba(0, 0, 0, 0.7);
 }
 
 .carousel-button.prev {
